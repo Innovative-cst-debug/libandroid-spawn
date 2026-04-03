@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-and-build:
+    runs-on: ubuntu-latest
+
+    env:
+      NDK_VERSION: r26d
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build for all architectures
+        run: |
+          chmod +x ./build.sh
+          ./build.sh
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ndk-build-artifacts
+          path: |
+            build-arm64/install
+            build-arm/install
+            build-x86/install
+            build-x86_64/install
